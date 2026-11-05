@@ -461,14 +461,10 @@ export default function App() {
         isDarkMode ? 'dark bg-[#0c0e12] text-[#f4f4f5]' : 'bg-[#faf8f5] text-[#18181b]'
       }`}
     >
-      {/* Subtle grid & soft background lighting */}
+      {/* Clean background with subtle architectural grid */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute inset-0 bg-blueprint-grid opacity-80" />
-        <div className="absolute top-0 left-0 right-0 h-[480px] bg-dot-matrix opacity-60" />
-
-        <div className="absolute -top-32 left-1/4 w-[520px] h-[520px] rounded-full bg-[#e3ece6] dark:bg-[#13271d]/60 blur-[130px] opacity-70" />
-        <div className="absolute top-1/3 -right-24 w-[480px] h-[480px] rounded-full bg-[#faebe6] dark:bg-[#2e1913]/50 blur-[140px] opacity-60" />
-        <div className="absolute bottom-20 left-10 w-[500px] h-[500px] rounded-full bg-[#e3ecf2] dark:bg-[#12222f]/50 blur-[130px] opacity-60" />
+        <div className="absolute top-0 left-0 right-0 h-[480px] bg-dot-matrix opacity-40" />
       </div>
 
       {/* ===================================================================
@@ -643,12 +639,8 @@ export default function App() {
               transition={{ duration: 0.5 }}
               className="lg:col-span-7 space-y-6"
             >
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] border border-[#cfe2d8] dark:border-[#2d5a43] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-medium shadow-2xs">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3b7a57] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3b7a57]" />
-                </span>
-                <span>Open to Graduate & Placement Roles</span>
+              <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] border border-[#cfe2d8] dark:border-[#2d5a43] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-medium">
+                <span>Looking for Graduate Jobs & Internships</span>
               </div>
 
               <div className="space-y-3">
@@ -1368,15 +1360,14 @@ Simulating DFA 'DivisibleByThree':
               {/* Left Column: Direct info */}
               <div className="lg:col-span-5 space-y-6">
                 <div className="space-y-2">
-                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-mono font-medium">
-                    <span className="w-2 h-2 rounded-full bg-[#3b7a57]" />
+                  <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-mono font-medium">
                     Contact
                   </span>
                   <h2 className="text-3xl font-extrabold tracking-tight">
                     Get in touch
                   </h2>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                    If you’re hiring for software engineering placements or graduate roles, or want to chat about any of my projects, feel free to reach out.
+                    If you’re hiring for graduate roles or internships, or want to chat about any of my projects, feel free to reach out.
                   </p>
                 </div>
 
