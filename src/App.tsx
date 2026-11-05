@@ -4,16 +4,14 @@ import {
   Github,
   Linkedin,
   Mail,
+  Phone,
   ArrowUpRight,
-  ArrowUp,
   Copy,
   Check,
   MapPin,
-  Sparkles,
   GraduationCap,
   Briefcase,
   Code2,
-  Layers,
   Cloud,
   Cpu,
   Send,
@@ -22,730 +20,880 @@ import {
   Menu,
   X,
   ExternalLink,
-  Compass
+  Sun,
+  Moon,
+  FileText,
+  Terminal,
+  ShieldCheck,
+  Zap,
+  Network,
+  ChevronRight
 } from 'lucide-react';
 
 // ============================================================================
-// DATA LAYER (Strictly decoupled configuration - mirrors /data/*.ts files)
+// PROJECT & PROFILE DATA
 // ============================================================================
 
-export interface ProfileConfig {
-  fullName: string;
-  firstName: string;
-  initials: string;
-  title: string;
-  location: string;
-  email: string;
-  statusBadge: string;
-  heroGreeting: string;
-  heroHeadline: string;
-  heroDescription: string;
-}
-
-export const profileData: ProfileConfig = {
-  fullName: 'Gabrielius Uosis',
-  firstName: 'Gabrielius',
-  initials: 'GU',
-  title: 'Computer Science Student & Software Engineer',
-  location: 'London & Loughborough, UK',
-  email: 'gabrieliusuosis@gmail.com',
-  statusBadge: 'Available for Graduate Software Engineering Roles',
-  heroGreeting: 'Hello, I am Gabrielius.',
-  heroHeadline:
-    'Building thoughtful full-stack applications, distributed systems, and clean developer tools.',
-  heroDescription:
-    'I am a Computer Science student at Loughborough University on a First Class track (75% average), passionate about crafting reliable software with clean architecture and human-centered design.'
-};
-
-export interface SocialItem {
-  id: string;
-  label: string;
-  handle: string;
-  url: string;
-  icon: 'github' | 'linkedin' | 'mail';
-}
-
-export const socialsData: SocialItem[] = [
-  {
-    id: 'github',
-    label: 'GitHub',
-    handle: '@GabrieliusUosis',
-    url: 'https://github.com/GabrieliusUosis',
-    icon: 'github'
-  },
-  {
-    id: 'linkedin',
-    label: 'LinkedIn',
-    handle: 'in/gabrielius-uo',
-    url: 'https://www.linkedin.com/in/gabrielius-uo/',
-    icon: 'linkedin'
-  },
-  {
-    id: 'email',
-    label: 'Email',
-    handle: 'gabrieliusuosis@gmail.com',
-    url: 'mailto:gabrieliusuosis@gmail.com',
-    icon: 'mail'
-  }
-];
-
-export interface HeroPillCard {
+export interface ProjectDetail {
   id: string;
   title: string;
-  subtitle: string;
+  category: 'systems' | 'compilers' | 'fullstack' | 'hackathon';
   badge: string;
-  tone: 'sage' | 'terracotta' | 'sky' | 'stone';
-  icon: 'graduation' | 'sparkles' | 'code' | 'location';
-}
-
-export const heroPillsData: HeroPillCard[] = [
-  {
-    id: 'education',
-    title: 'CS @ Loughborough University',
-    subtitle: 'BSc (Hons) Computer Science',
-    badge: 'Education',
-    tone: 'sage',
-    icon: 'graduation'
-  },
-  {
-    id: 'academic-track',
-    title: 'First Class Track (75% Avg)',
-    subtitle: 'Strong algorithmic & systems foundation',
-    badge: 'Academic Standing',
-    tone: 'terracotta',
-    icon: 'sparkles'
-  },
-  {
-    id: 'focus',
-    title: 'Full-Stack & Systems Engineering',
-    subtitle: 'Web platforms, compilers & cloud APIs',
-    badge: 'Core Craft',
-    tone: 'sky',
-    icon: 'code'
-  },
-  {
-    id: 'base',
-    title: 'London & Loughborough, UK',
-    subtitle: 'Open to UK-wide & hybrid graduate roles',
-    badge: 'Location',
-    tone: 'stone',
-    icon: 'location'
-  }
-];
-
-export interface ProjectItem {
-  id: string;
-  title: string;
-  type: string;
+  tagline: string;
+  period: string;
   accent: 'sage' | 'terracotta' | 'sky' | 'amber';
-  description: string;
-  techTags: string[];
   githubUrl: string;
   liveUrl?: string;
-  year: string;
+  techTags: string[];
+  metrics: { label: string; value: string }[];
+  overview: string;
+  architecture: string[];
+  challenges: string[];
 }
 
-export const projectsData: ProjectItem[] = [
+export const projectsData: ProjectDetail[] = [
+  {
+    id: 'ash-lang',
+    title: 'ash-lang: DSL for Formal Models of Computation',
+    category: 'compilers',
+    badge: 'Final Year Project @ Loughborough',
+    tagline:
+      'A custom Domain-Specific Language for defining, validating, and simulating DFAs, NFAs, and Regular Expressions without boilerplate.',
+    period: 'Sep 2026 - Present',
+    accent: 'terracotta',
+    githubUrl: 'https://github.com/GabrieliusUosis/ash-lang',
+    techTags: ['Python', 'ANTLR4', 'Compiler Design', 'Semantic Analysis', 'Automata Theory', 'Pytest'],
+    metrics: [
+      { label: 'Frontend', value: 'ANTLR4 Grammar' },
+      { label: 'Transition Lookup', value: 'O(1) Hash Table' },
+      { label: 'Models Supported', value: 'DFA, NFA, Regex' },
+      { label: 'Validation', value: 'Static Determinism' }
+    ],
+    overview:
+      'Visual automata simulators are great for learning but lack scripting and version control, while general-purpose Python libraries require verbose nested dictionaries. ash-lang bridges that gap by making DFAs, NFAs, and Regular Expressions first-class syntax that can be statically checked, simulated, and exported to Graphviz DOT.',
+    architecture: [
+      'ANTLR4 Lexer & Parser (AutomataLexer.g4 / AutomataParser.g4): Tokenizes and parses .ash source files using a custom StrictErrorListener that reports exact line and column numbers on syntax errors.',
+      'Semantic Analysis Pass (SemanticAnalyser.py): Walks the parse tree before runtime to catch duplicate states or symbols, undeclared start/accept states, invalid transitions, and DFA determinism violations.',
+      'DFA Simulation Runtime (dfa.py): Compiles transitions into an O(1) lookup dictionary {(source, symbol): target} and supports step-by-step execution traces on input strings.',
+      'Transformation & Export Pipeline: Designed around standard automata algorithms (Thompson’s Construction, Subset Construction, Hopcroft’s minimization) and DOT graph generation.'
+    ],
+    challenges: [
+      'Built static semantic checks that verify DFA determinism (ensuring no state has duplicate outgoing transitions for the same symbol) before any simulation runs.',
+      'Designed a clean, readable block grammar for state machines while keeping error messages clear and specific to the offending line.'
+    ]
+  },
+  {
+    id: 'pulse-lan',
+    title: 'PulseLAN: Peer-to-Peer LAN Video Streaming & File Drop',
+    category: 'systems',
+    badge: 'Local Networking / WebRTC',
+    tagline:
+      'Browser-to-browser file transfer and real-time video streaming over local Wi-Fi using WebRTC DataChannels and a Service Worker.',
+    period: 'Nov 2026',
+    accent: 'sky',
+    githubUrl: 'https://github.com/GabrieliusUosis/pulseLAN',
+    techTags: ['JavaScript', 'WebRTC DataChannels', 'Node.js', 'Service Workers', 'HTTP 206', 'WebSockets'],
+    metrics: [
+      { label: 'Dependencies', value: '0 (Standard Lib)' },
+      { label: 'Chunk Size', value: '64 KB Slices' },
+      { label: 'File Size', value: '4GB+ Supported' },
+      { label: 'Video Seeking', value: 'HTTP 206 Ranges' }
+    ],
+    overview:
+      'A local-network file sharing and video streaming tool that transfers files directly between browsers over LAN without uploading anything to the cloud. Drop a large video file into one browser and another device on the same network can immediately stream and scrub through it.',
+    architecture: [
+      'Zero-Dependency Node.js Signaling Server: Uses built-in Node modules (http, crypto, os, fs) to handle RFC 6455 WebSocket handshakes and relay WebRTC SDP offers and ICE candidates. No file data touches the server.',
+      'Service Worker HTTP 206 Streamer: Intercepts <video> requests to /p2p-stream/..., reads the HTTP Range: bytes=start-end header, and fetches the needed byte slices from the peer over WebRTC.',
+      '64KB Slicing & Backpressure: Reads multi-gigabyte files on demand with File.slice() and pauses sending when channel.bufferedAmount exceeds 4MB, resuming on bufferedamountlow.'
+    ],
+    challenges: [
+      'Prevented browser memory crashes on multi-gigabyte transfers by streaming 64KB slices on demand and respecting WebRTC buffer backpressure.',
+      'Connected HTML5 video timeline scrubbing to asynchronous WebRTC data channels by translating HTTP 206 partial content requests inside a Service Worker.'
+    ]
+  },
   {
     id: 'project-management-dashboard',
     title: 'Full-Stack Project Management Dashboard',
-    type: 'Full-Stack Web Application',
+    category: 'fullstack',
+    badge: 'Academic Project @ Loughborough',
+    tagline:
+      'A full-stack project and task management web application built with React, Node.js, and PostgreSQL, hosted on Google Cloud.',
+    period: 'Sep 2025 - Mar 2026',
     accent: 'sage',
-    description:
-      'A responsive management platform built to streamline team task distribution and role-based workflows, backed by scalable cloud infrastructure and RESTful APIs.',
-    techTags: ['React', 'Node.js', 'PostgreSQL', 'GCP', 'REST APIs'],
     githubUrl: 'https://github.com/GabrieliusUosis',
-    liveUrl: 'https://github.com/GabrieliusUosis',
-    year: '2025'
+    techTags: ['React', 'Node.js', 'PostgreSQL', 'Google Cloud Platform (GCP)', 'Linux VM', 'REST APIs'],
+    metrics: [
+      { label: 'REST Endpoints', value: '20+ Routes' },
+      { label: 'Avg Query Time', value: '<100ms' },
+      { label: 'Simulated Load', value: '500+ Users' },
+      { label: 'Uptime on GCP', value: '99.99%' }
+    ],
+    overview:
+      'A full-stack web application designed for managing team projects, tasks, and workflows. Built with a React frontend, a Node.js REST API, and a PostgreSQL database deployed on a Google Cloud Linux VM.',
+    architecture: [
+      'PostgreSQL Database on GCP: Configured and managed a 50GB PostgreSQL instance running on a scalable Linux VM on Google Cloud Platform.',
+      'RESTful Backend API: Implemented 20+ endpoints in Node.js connecting the React interface with the database, keeping average query response times under 100ms.',
+      'Concurrent Workload Testing: Structured queries and connection pooling to support a simulated workload of 500+ concurrent users.'
+    ],
+    challenges: [
+      'Kept API response times under 100ms across 20+ endpoints by indexing foreign keys and optimizing SQL joins.',
+      'Configured Linux VM process management and database backups on GCP to maintain reliable uptime.'
+    ]
   },
   {
-    id: 'custom-language-compiler',
-    title: 'Custom Programming Language & Compiler',
-    type: 'Systems / Architecture Project',
-    accent: 'terracotta',
-    description:
-      'An interpreted domain-specific programming language engineered with a recursive descent parser, custom AST evaluations, and precise syntax diagnostic reporting.',
-    techTags: ['Python', 'Compilers', 'ASTs', 'Algorithms'],
-    githubUrl: 'https://github.com/GabrieliusUosis',
-    year: '2025'
-  },
-  {
-    id: 'realtime-voice-modulation',
-    title: 'Real-Time Voice Modulation Tool',
-    type: 'Hackathon Winner (1st Place) / Audio Engineering',
-    accent: 'sky',
-    description:
-      'Real-time speech transformation system integrating streaming APIs with sub-200ms latency to mitigate bias during technical interview screens.',
-    techTags: ['Python', 'ElevenLabs API', 'WebSockets'],
-    githubUrl: 'https://github.com/GabrieliusUosis',
-    year: '2024'
-  },
-  {
-    id: 'mobile-system-application',
-    title: 'Mobile Application or System Tool',
-    type: 'Mobile / Client Application',
+    id: 'edi-voice-tool',
+    title: 'Real-Time Voice-Changing EDI Tool',
+    category: 'hackathon',
+    badge: 'Loughborough Hackathon — 2nd Place (of 15)',
+    tagline:
+      'Real-time voice modulation tool built to reduce unconscious bias during technical interviews using the ElevenLabs API.',
+    period: 'Sep 2025 - Oct 2025',
     accent: 'amber',
-    description:
-      'Native application featuring clean local database persistence, reactive state architecture, and smooth fluid gesture transitions.',
-    techTags: ['Kotlin', 'Jetpack Compose', 'Room DB'],
+    githubUrl: 'https://github.com/GabrieliusUosis/Included-Without-Limitations',
+    techTags: ['Python', 'ElevenLabs API', 'Real-Time Audio', 'WebSockets'],
+    metrics: [
+      { label: 'Result', value: '2nd Place / 15 Teams' },
+      { label: 'Audio Latency', value: '<200ms' },
+      { label: 'Team Size', value: '4 Students' },
+      { label: 'Integration', value: 'ElevenLabs API' }
+    ],
+    overview:
+      'Built in a team of 4 at the Loughborough Hackathon, where we placed 2nd out of 15 teams. The tool transforms a candidate’s voice in real time during remote interviews so interviewers evaluate answers without demographic bias.',
+    architecture: [
+      'Audio Capture & Streaming: Captures live microphone input in small audio frames and streams them for processing.',
+      'ElevenLabs Speech Transformation: Integrates the ElevenLabs API to convert speech in real time while keeping latency under 200ms.',
+      'Interview Interface: Clean call interface allowing candidates and interviewers to speak naturally with minimal delay.'
+    ],
+    challenges: [
+      'Tuned chunk sizes and streaming buffers to keep end-to-end voice transformation latency under 200ms so conversation felt natural.',
+      'Coordinated API integration and audio playback across a team of 4 within a tight hackathon deadline.'
+    ]
+  },
+  {
+    id: 'meta-math-solver',
+    title: 'Algorithmic Math Solver',
+    category: 'hackathon',
+    badge: 'Meta Hackathon UK — 3rd Place (of 20+)',
+    tagline:
+      'Python algorithms written to solve 15 complex mathematical and algorithmic problems under strict competition time limits.',
+    period: 'Nov 2025 - Dec 2025',
+    accent: 'terracotta',
     githubUrl: 'https://github.com/GabrieliusUosis',
-    year: '2024'
+    techTags: ['Python', 'Algorithms', 'Dynamic Programming', 'Combinatorics', 'Optimization'],
+    metrics: [
+      { label: 'Result', value: '3rd Place / 20+ Teams' },
+      { label: 'Problems Solved', value: '15 Problems' },
+      { label: 'Language', value: 'Python' },
+      { label: 'Format', value: 'Timed Competition' }
+    ],
+    overview:
+      'Competed at the Meta Hackathon in the UK against a cohort of 20+ teams, finishing in 3rd place by writing fast Python solutions to 15 difficult mathematical and algorithmic problems.',
+    architecture: [
+      'Algorithmic Problem Solving: Used dynamic programming, graph search, and number theory reductions to avoid brute-force timeouts.',
+      'Runtime Optimization: Profiled bottlenecks and used efficient data structures in Python to stay within strict execution time limits.'
+    ],
+    challenges: [
+      'Reduced exponential search spaces on large inputs so all 15 solutions finished within the judge time limits.',
+      'Worked quickly under competition pressure to translate mathematical problem statements into working, tested Python code.'
+    ]
+  },
+  {
+    id: 'adapt-mobile',
+    title: 'Adapt — Student Revision Mobile App',
+    category: 'fullstack',
+    badge: 'Software Internship',
+    tagline:
+      'Built core UI modules and interactive quiz features in JavaScript and React Native for a revision app with 10,000+ active users.',
+    period: 'Feb 2020 - May 2020',
+    accent: 'sage',
+    githubUrl: 'https://github.com/GabrieliusUosis',
+    techTags: ['JavaScript', 'React Native', 'Mobile UI', 'Git'],
+    metrics: [
+      { label: 'Active Users', value: '10,000+ Students' },
+      { label: 'Stack', value: 'React Native & JS' },
+      { label: 'Role', value: 'Software Intern' },
+      { label: 'Location', value: 'London, UK' }
+    ],
+    overview:
+      'Worked as a Software Intern at Adapt in London, building core UI screens and interactive quiz features for a mobile revision application used by over 10,000 GCSE and A-Level students.',
+    architecture: [
+      'React Native UI Modules: Built reusable cross-platform screens and components in JavaScript and React Native.',
+      'Interactive Quiz Flows: Implemented quiz state handling, score summaries, and interactive revision cards.'
+    ],
+    challenges: [
+      'Made sure UI transitions and quiz interactions stayed smooth across different iOS and Android screen sizes.',
+      'Collaborated with the development team using Git to ship features to 10,000+ active student users.'
+    ]
   }
 ];
 
-export interface SkillGroup {
-  id: string;
-  category: string;
-  description: string;
-  accent: 'sage' | 'terracotta' | 'sky' | 'amber';
-  icon: 'code' | 'layers' | 'cloud' | 'cpu';
-  skills: string[];
-}
-
-export const skillsData: SkillGroup[] = [
+export const skillsCategories = [
   {
     id: 'languages',
-    category: 'Languages',
-    description: 'Core languages for systems, web, and data engineering',
-    accent: 'sage',
-    icon: 'code',
-    skills: ['Python', 'Java', 'Kotlin', 'TypeScript', 'C++', 'SQL']
+    name: 'Languages',
+    description: 'Languages I use for coursework, side projects, and scripting',
+    icon: Code2,
+    skills: ['Python', 'Java', 'Kotlin', 'JavaScript', 'SQL', 'PHP', 'HTML / CSS']
   },
   {
-    id: 'frameworks',
-    category: 'Frameworks & Libraries',
-    description: 'Modern tools for responsive interfaces and backend services',
-    accent: 'terracotta',
-    icon: 'layers',
-    skills: ['React', 'Next.js', 'Node.js', 'Express', 'Tailwind CSS', 'Jetpack Compose']
+    id: 'web-frameworks',
+    name: 'Frameworks & Web',
+    description: 'Frontend, backend, and real-time browser APIs',
+    icon: Network,
+    skills: ['React', 'React Native', 'Node.js', 'REST APIs', 'WebRTC', 'WebSockets', 'Service Workers']
   },
   {
-    id: 'cloud-devops',
-    category: 'Cloud & DevOps',
-    description: 'Database persistence, containerization, and cloud deployment',
-    accent: 'sky',
-    icon: 'cloud',
-    skills: ['PostgreSQL', 'Docker', 'Google Cloud Platform (GCP)', 'Git', 'Linux']
+    id: 'cloud-tools',
+    name: 'Cloud, Databases & Tools',
+    description: 'Database hosting, Linux environments, and version control',
+    icon: Cloud,
+    skills: ['PostgreSQL', 'Google Cloud Platform (GCP)', 'Linux', 'Git & GitHub', 'ANTLR4', 'Pytest']
   },
   {
-    id: 'fundamentals',
-    category: 'Fundamentals',
-    description: 'Architectural principles and computer science foundations',
-    accent: 'amber',
-    icon: 'cpu',
-    skills: ['Distributed Systems', 'REST APIs', 'Object-Oriented Design', 'Data Structures']
+    id: 'cs-topics',
+    name: 'Computer Science Modules',
+    description: 'Key areas covered at Loughborough University',
+    icon: Cpu,
+    skills: [
+      'Software Engineering',
+      'Algorithms Analysis',
+      'Formal Methods',
+      'Theory of Computation',
+      'Distributed Systems',
+      'Databases',
+      'Cloud Computing',
+      'Robotics'
+    ]
   }
 ];
 
-export interface ExperienceItem {
-  id: string;
-  role: string;
-  organization: string;
-  location: string;
-  period: string;
-  category: 'Education' | 'Engineering' | 'Operations';
-  highlightBadge: string;
-  accent: 'sage' | 'terracotta' | 'sky';
-  summary: string;
-  tags: string[];
-}
-
-export const experienceData: ExperienceItem[] = [
+export const timelineEvents = [
   {
-    id: 'loughborough-cs',
+    id: 'loughborough',
     role: 'BSc (Hons) Computer Science',
     organization: 'Loughborough University',
     location: 'Loughborough, UK',
-    period: 'Present',
-    category: 'Education',
-    highlightBadge: 'First Class Track (75% Average)',
-    accent: 'sage',
+    period: 'Sep 2024 — Jun 2027',
+    badge: 'Undergraduate Degree',
     summary:
-      'Pursuing an undergraduate degree in Computer Science with a 75% First Class average. Coursework spans software architecture, algorithms and data structures, operating systems, relational databases, and artificial intelligence.',
-    tags: ['First Class Track', 'Algorithms', 'Software Engineering', 'Distributed Systems']
+      'Studying Computer Science. Relevant modules include Software Engineering, Algorithms Analysis, Cloud Computing, Formal Methods, Theory of Computation, Databases, Distributed Systems, and Robotics.',
+    tags: ['Software Engineering', 'Algorithms Analysis', 'Formal Methods', 'Distributed Systems']
   },
   {
-    id: 'adapt-intern',
-    role: 'Software Intern',
-    organization: 'Adapt',
-    location: 'United Kingdom',
-    period: 'Internship',
-    category: 'Engineering',
-    highlightBadge: '10k+ Active Users',
-    accent: 'sky',
+    id: 'meta-hackathon',
+    role: 'Algorithmic Math Solver (3rd Place)',
+    organization: 'Meta Hackathon',
+    location: 'UK',
+    period: 'Nov 2025 — Dec 2025',
+    badge: '3rd Place / 20+ Teams',
     summary:
-      'Engineered interactive UI modules and student revision features in React Native for a mobile learning platform serving more than 10,000 users. Collaborated closely on state management and smooth mobile user flows.',
-    tags: ['React Native', 'Mobile Engineering', 'UI Components', 'Agile']
+      'Wrote Python algorithms to solve 15 complex mathematical problems under strict time constraints, finishing 3rd against a cohort of 20+ teams.',
+    tags: ['Python', 'Algorithms', 'Problem Solving']
   },
   {
-    id: 'gordons-wine-bar',
-    role: 'Floor Staff / High-Volume Operations',
+    id: 'loughborough-hackathon',
+    role: 'Voice-Changing EDI Tool (2nd Place)',
+    organization: 'Loughborough Hackathon',
+    location: 'Loughborough, UK',
+    period: 'Sep 2025 — Oct 2025',
+    badge: '2nd Place / 15 Teams',
+    summary:
+      'Designed a system in a team of 4 that lets users change their voice in real time to prevent bias during interviews. Integrated the ElevenLabs API with sub-200ms latency.',
+    tags: ['ElevenLabs API', 'Python', 'Real-Time Audio']
+  },
+  {
+    id: 'gordons',
+    role: 'Waiter',
     organization: "Gordon's Wine Bar",
-    location: 'Central London, UK',
-    period: 'Hospitality & Operations',
-    category: 'Operations',
-    highlightBadge: 'High-Pressure Teamwork',
-    accent: 'terracotta',
+    location: 'London, UK',
+    period: 'Sep 2022 — Present',
+    badge: 'Part-Time Work',
     summary:
-      "Delivered fast-paced hospitality coordination and attentive guest service at London's oldest wine bar. Developed strong communication habits, composure under peak service pressure, and seamless team coordination.",
-    tags: ['Team Coordination', 'Client Relations', 'Fast-Paced Operations']
+      'Manage high-volume service of 350+ covers per shift and process 400+ daily transactions across peak periods at London’s oldest wine bar.',
+    tags: ['Teamwork', 'Fast-Paced Environment', 'Customer Service']
+  },
+  {
+    id: 'adapt',
+    role: 'Software Intern',
+    organization: 'Adapt (App Development)',
+    location: 'London, UK',
+    period: 'Feb 2020 — May 2020',
+    badge: '10,000+ Active Users',
+    summary:
+      'Programmed core UI modules and interactive quiz features for a student revision mobile application using JavaScript and React Native, supporting over 10,000 active users.',
+    tags: ['JavaScript', 'React Native', 'Mobile UI']
+  },
+  {
+    id: 'moj',
+    role: 'Work Experience',
+    organization: 'Ministry of Justice',
+    location: 'London, UK',
+    period: 'Sep 2019 — Feb 2020',
+    badge: 'Public Sector',
+    summary:
+      'Evaluated internal HR frameworks affecting 500+ department staff and delivered policy recommendations resulting in a 15% increase in accessibility compliance. Ran 3 cross-department workshops for 200+ participants.',
+    tags: ['Accessibility', 'Workshops', 'Policy Review']
   }
 ];
 
-export const navItemsData = [
-  { id: 'about', label: 'About', href: '#about' },
-  { id: 'projects', label: 'Projects', href: '#projects' },
-  { id: 'toolkit', label: 'Toolkit', href: '#toolkit' },
-  { id: 'experience', label: 'Experience', href: '#experience' },
-  { id: 'contact', label: 'Contact', href: '#contact' }
-];
-
 // ============================================================================
-// THEME TOKENS & ICON HELPERS
-// ============================================================================
-
-const accentStyles = {
-  sage: {
-    pillBg: 'bg-[#e7f0eb]',
-    pillText: 'text-[#2d5a43]',
-    pillBorder: 'border-[#cfe2d8]',
-    cardTint: 'hover:border-[#bfd8cb]',
-    dot: 'bg-[#3b7a57]'
-  },
-  terracotta: {
-    pillBg: 'bg-[#f9ebe6]',
-    pillText: 'text-[#9e472d]',
-    pillBorder: 'border-[#f1d4ca]',
-    cardTint: 'hover:border-[#e8bfb0]',
-    dot: 'bg-[#c86d51]'
-  },
-  sky: {
-    pillBg: 'bg-[#eaf1f5]',
-    pillText: 'text-[#345e77]',
-    pillBorder: 'border-[#d3e2ec]',
-    cardTint: 'hover:border-[#b9d2e2]',
-    dot: 'bg-[#4a7c9b]'
-  },
-  amber: {
-    pillBg: 'bg-[#f5efe2]',
-    pillText: 'text-[#7c5826]',
-    pillBorder: 'border-[#e8dcc2]',
-    cardTint: 'hover:border-[#dcc8a2]',
-    dot: 'bg-[#b5843b]'
-  },
-  stone: {
-    pillBg: 'bg-[#f0eee9]',
-    pillText: 'text-[#44403c]',
-    pillBorder: 'border-[#e2ded6]',
-    cardTint: 'hover:border-[#d6d1c7]',
-    dot: 'bg-[#78716c]'
-  }
-};
-
-const SocialIcon: React.FC<{ icon: SocialItem['icon']; className?: string }> = ({
-  icon,
-  className = 'w-4 h-4'
-}) => {
-  switch (icon) {
-    case 'github':
-      return <Github className={className} />;
-    case 'linkedin':
-      return <Linkedin className={className} />;
-    case 'mail':
-      return <Mail className={className} />;
-    default:
-      return <Mail className={className} />;
-  }
-};
-
-const SkillCategoryIcon: React.FC<{ icon: SkillGroup['icon']; className?: string }> = ({
-  icon,
-  className = 'w-5 h-5'
-}) => {
-  switch (icon) {
-    case 'code':
-      return <Code2 className={className} />;
-    case 'layers':
-      return <Layers className={className} />;
-    case 'cloud':
-      return <Cloud className={className} />;
-    case 'cpu':
-      return <Cpu className={className} />;
-    default:
-      return <Code2 className={className} />;
-  }
-};
-
-const HeroCardIcon: React.FC<{ icon: HeroPillCard['icon']; className?: string }> = ({
-  icon,
-  className = 'w-4 h-4'
-}) => {
-  switch (icon) {
-    case 'graduation':
-      return <GraduationCap className={className} />;
-    case 'sparkles':
-      return <Sparkles className={className} />;
-    case 'code':
-      return <Code2 className={className} />;
-    case 'location':
-      return <MapPin className={className} />;
-    default:
-      return <Sparkles className={className} />;
-  }
-};
-
-// ============================================================================
-// MAIN COMPONENT
+// MAIN APPLICATION COMPONENT
 // ============================================================================
 
 export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
   const [activeNav, setActiveNav] = useState<string>('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [activeSkillCategory, setActiveSkillCategory] = useState<string>('all');
-  const [selectedHeroCard, setSelectedHeroCard] = useState<string>(heroPillsData[0].id);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [activeDetailProject, setActiveDetailProject] = useState<ProjectDetail | null>(null);
   const [copiedEmail, setCopiedEmail] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  // Interactive Card Selection on Hero
+  const [heroCardTab, setHeroCardTab] = useState<'education' | 'stack' | 'background'>('education');
+
+  // Code & Architecture preview tab
+  const [activeSandboxTab, setActiveSandboxTab] = useState<'ashlang' | 'pulselan'>('ashlang');
+
+  // Contact form state
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
+  // Sync dark mode class to html element
   useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  // Scrollspy observer
+  useEffect(() => {
+    const sections = ['about', 'projects', 'architecture', 'skills', 'experience', 'contact'];
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 240;
-      for (const item of navItemsData) {
-        const el = document.getElementById(item.id);
+      const scrollPos = window.scrollY + 220;
+      for (const section of sections) {
+        const el = document.getElementById(section);
         if (el) {
           const top = el.offsetTop;
           const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveNav(item.id);
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveNav(section);
             break;
           }
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      setMobileMenuOpen(false);
-      if (href === '#top') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-      const id = href.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setActiveNav(id);
-      }
-    }
-  };
-
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(profileData.email);
+      await navigator.clipboard.writeText('gabrieliusuosis@gmail.com');
       setCopiedEmail(true);
       setTimeout(() => setCopiedEmail(false), 2600);
     } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = profileData.email;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
       setCopiedEmail(true);
       setTimeout(() => setCopiedEmail(false), 2600);
     }
   };
 
-  const validateForm = () => {
-    const errors: Record<string, string> = {};
-    if (!formData.name.trim()) {
-      errors.name = 'Please share your name';
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    if (targetId === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
-    if (!formData.email.trim()) {
-      errors.email = 'Please provide an email address';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      errors.email = 'Please enter a valid email address';
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActiveNav(targetId);
     }
-    if (!formData.message.trim() || formData.message.trim().length < 8) {
-      errors.message = 'Please write a short message (at least 8 characters)';
-    }
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    const errors: Record<string, string> = {};
+    if (!formData.name.trim()) errors.name = 'Please enter your name';
+    if (!formData.email.trim()) errors.email = 'Please enter your email';
+    else if (!/^\S+@\S+\.\S+$/.test(formData.email)) errors.email = 'Please enter a valid email';
+    if (!formData.message.trim() || formData.message.trim().length < 8) {
+      errors.message = 'Please write a short message';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
 
     setIsSubmitting(true);
-    setSubmitSuccess(false);
-
+    setFormErrors({});
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', message: '' });
-      setFormErrors({});
-    }, 1000);
+    }, 700);
   };
 
-  const githubProfileUrl =
-    socialsData.find((s) => s.id === 'github')?.url || 'https://github.com/GabrieliusUosis';
+  const filteredProjects =
+    selectedCategory === 'all'
+      ? projectsData
+      : projectsData.filter((p) => p.category === selectedCategory);
 
   return (
     <div
-      id="top"
-      className="min-h-screen bg-[#faf8f5] text-[#1c1917] selection:bg-[#e7f0eb] selection:text-[#1c1917] relative overflow-x-hidden antialiased"
-      style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif" }}
+      className={`min-h-screen selection:bg-[#2d5a43] selection:text-white ${
+        isDarkMode ? 'dark bg-[#0c0e12] text-[#f4f4f5]' : 'bg-[#faf8f5] text-[#18181b]'
+      }`}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-      `}</style>
-
+      {/* Subtle grid & soft background lighting */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/4 w-[520px] h-[520px] rounded-full bg-[#e7f0eb]/55 blur-[110px]" />
-        <div className="absolute top-1/3 -right-24 w-[460px] h-[460px] rounded-full bg-[#f9ebe6]/55 blur-[110px]" />
-        <div className="absolute bottom-12 left-10 w-[480px] h-[480px] rounded-full bg-[#eaf1f5]/50 blur-[120px]" />
+        <div className="absolute inset-0 bg-blueprint-grid opacity-80" />
+        <div className="absolute top-0 left-0 right-0 h-[480px] bg-dot-matrix opacity-60" />
+
+        <div className="absolute -top-32 left-1/4 w-[520px] h-[520px] rounded-full bg-[#e3ece6] dark:bg-[#13271d]/60 blur-[130px] opacity-70" />
+        <div className="absolute top-1/3 -right-24 w-[480px] h-[480px] rounded-full bg-[#faebe6] dark:bg-[#2e1913]/50 blur-[140px] opacity-60" />
+        <div className="absolute bottom-20 left-10 w-[500px] h-[500px] rounded-full bg-[#e3ecf2] dark:bg-[#12222f]/50 blur-[130px] opacity-60" />
       </div>
 
-      <header className="fixed top-5 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center">
+      {/* ===================================================================
+          1. NAVIGATION BAR
+      =================================================================== */}
+      <header className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center">
         <nav
-          aria-label="Main Navigation"
-          className="w-full max-w-3xl rounded-full bg-white/75 backdrop-blur-md border border-stone-200/70 shadow-[0_8px_30px_rgb(28,25,23,0.05)] px-3 sm:px-4 py-2 flex items-center justify-between transition-all"
+          aria-label="Primary Navigation"
+          className="w-full max-w-5xl rounded-full bg-white/85 dark:bg-[#14171d]/90 backdrop-blur-md border border-stone-200/90 dark:border-[#262a34] shadow-[0_4px_24px_rgba(0,0,0,0.05)] px-4 py-2 flex items-center justify-between transition-all"
         >
           <a
             href="#top"
-            onClick={(e) => scrollToSection(e, '#top')}
-            className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full hover:bg-stone-100/80 transition-colors"
+            onClick={(e) => scrollToSection(e, 'top')}
+            className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full hover:bg-stone-100 dark:hover:bg-white/5 transition-colors group"
           >
-            <span className="w-8 h-8 rounded-full bg-[#1c1917] text-[#faf8f5] text-xs font-semibold flex items-center justify-center tracking-tight">
-              {profileData.initials}
-            </span>
-            <span className="font-semibold text-sm text-[#1c1917] tracking-tight">
-              {profileData.fullName}
-            </span>
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-stone-300 dark:border-stone-700 shrink-0 bg-stone-200">
+              <img
+                src="./avatar.jpg"
+                alt="Gabrielius Uosis"
+                className="w-full h-full object-cover object-top"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://avatars.githubusercontent.com/u/209792310?v=4';
+                }}
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-sm tracking-tight leading-tight group-hover:text-[#2d5a43] dark:group-hover:text-[#7fd8ab] transition-colors">
+                Gabrielius Uosis
+              </span>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 font-mono">
+                BSc CS @ Loughborough
+              </span>
+            </div>
           </a>
 
-          <div className="hidden md:flex items-center gap-1">
-            {navItemsData.map((item) => {
-              const isActive = activeNav === item.id;
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex items-center gap-1">
+            {[
+              { id: 'about', label: 'About' },
+              { id: 'projects', label: 'Projects' },
+              { id: 'architecture', label: 'Code & Demos' },
+              { id: 'skills', label: 'Skills' },
+              { id: 'experience', label: 'Experience' },
+              { id: 'contact', label: 'Contact' }
+            ].map((link) => {
+              const isActive = activeNav === link.id;
               return (
                 <a
-                  key={item.id}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className={`relative px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    isActive ? 'text-[#1c1917]' : 'text-[#78716c] hover:text-[#1c1917]'
+                  key={link.id}
+                  href={`#${link.id}`}
+                  onClick={(e) => scrollToSection(e, link.id)}
+                  className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    isActive
+                      ? 'text-stone-900 dark:text-white font-semibold'
+                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
                   }`}
                 >
                   {isActive && (
                     <motion.span
-                      layoutId="activeNavPill"
-                      className="absolute inset-0 rounded-full bg-[#f0eee9] -z-10"
+                      layoutId="navIndicator"
+                      className="absolute inset-0 rounded-full bg-stone-100 dark:bg-white/10 -z-10"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  {item.label}
+                  {link.label}
                 </a>
               );
             })}
           </div>
 
+          {/* Quick Actions: Dark Mode, Actual CV PDF Link, Contact */}
           <div className="flex items-center gap-2">
-            <motion.a
-              whileHover={{ y: -1.5, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              href="#contact"
-              onClick={(e) => scrollToSection(e, '#contact')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-stone-900 text-stone-50 hover:bg-stone-800 shadow-sm transition-colors"
+            <button
+              type="button"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label="Toggle theme"
+              className="p-2 rounded-full bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-white/10 transition-colors"
+              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
-              <span>Let's Talk</span>
+              {isDarkMode ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-stone-700" />}
+            </button>
+
+            <a
+              href="./gabrielius_uosis_cv.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-stone-100 dark:bg-white/5 text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-white/10 border border-stone-200/80 dark:border-white/10 transition-colors"
+            >
+              <FileText className="w-3.5 h-3.5 text-[#2d5a43] dark:text-[#7fd8ab]" />
+              <span>CV</span>
+            </a>
+
+            <a
+              href="#contact"
+              onClick={(e) => scrollToSection(e, 'contact')}
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 shadow-sm transition-all"
+            >
+              <span>Get in Touch</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </motion.a>
+            </a>
 
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Menu"
-              className="md:hidden p-2 rounded-full bg-[#f0eee9] text-[#1c1917] hover:bg-stone-200/70 transition-colors"
+              aria-label="Toggle mobile navigation"
+              className="lg:hidden p-2 rounded-full bg-stone-100 dark:bg-white/5 text-stone-800 dark:text-stone-200"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </nav>
 
+        {/* Mobile Dropdown Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="md:hidden absolute top-16 left-4 right-4 rounded-[2rem] bg-white/95 backdrop-blur-lg border border-stone-200/80 shadow-xl p-5 flex flex-col gap-2"
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              className="lg:hidden absolute top-16 left-4 right-4 rounded-3xl bg-white/95 dark:bg-[#14171d]/95 backdrop-blur-xl border border-stone-200 dark:border-[#262a34] shadow-2xl p-5 flex flex-col gap-2"
             >
-              {navItemsData.map((item) => (
+              {[
+                { id: 'about', label: 'About' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'architecture', label: 'Code & Demos' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'experience', label: 'Experience' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
                 <a
                   key={item.id}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className="px-4 py-2.5 rounded-full text-sm font-medium text-[#292524] hover:bg-[#f0eee9] transition-colors"
+                  href={`#${item.id}`}
+                  onClick={(e) => scrollToSection(e, item.id)}
+                  className="px-4 py-2.5 rounded-2xl text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-white/5 transition-colors"
                 >
                   {item.label}
                 </a>
               ))}
-              <a
-                href="#contact"
-                onClick={(e) => scrollToSection(e, '#contact')}
-                className="mt-2 w-full text-center py-3 rounded-full text-sm font-medium bg-stone-900 text-stone-50"
-              >
-                Let's Talk
-              </a>
+              <div className="pt-2 border-t border-stone-200 dark:border-white/10 flex gap-2">
+                <a
+                  href="./gabrielius_uosis_cv.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2.5 rounded-2xl text-xs font-semibold bg-stone-100 dark:bg-white/10 text-center"
+                >
+                  Open CV (PDF)
+                </a>
+                <a
+                  href="#contact"
+                  onClick={(e) => scrollToSection(e, 'contact')}
+                  className="flex-1 py-2.5 rounded-2xl text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-center"
+                >
+                  Contact Me
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
 
-      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-32 pb-24 space-y-28 sm:space-y-32">
-        <section id="about" className="scroll-mt-32">
+      {/* ===================================================================
+          2. HERO SECTION
+      =================================================================== */}
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-32 sm:pt-36 pb-24 space-y-28 sm:space-y-36">
+        <section id="about" className="scroll-mt-36">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Column: Intro */}
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="lg:col-span-7 space-y-7"
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-7 space-y-6"
             >
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#e7f0eb] border border-[#cfe2d8] text-[#2d5a43] text-xs sm:text-sm font-medium shadow-sm">
-                <span className="relative flex h-2.5 w-2.5">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] border border-[#cfe2d8] dark:border-[#2d5a43] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-medium shadow-2xs">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3b7a57] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#3b7a57]" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3b7a57]" />
                 </span>
-                <span>{profileData.statusBadge}</span>
+                <span>Open to Graduate & Placement Roles</span>
               </div>
 
-              <div className="space-y-4">
-                <p className="text-base sm:text-lg font-medium text-[#78716c]">
-                  {profileData.heroGreeting}
-                </p>
-                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#1c1917] leading-[1.15]">
-                  {profileData.heroHeadline}
+              <div className="space-y-3">
+                <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.12]">
+                  Computer Science student building compilers, local-network tools, and full-stack apps.
                 </h1>
+                <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                  Hi, I’m <strong className="font-semibold text-stone-900 dark:text-white">Gabrielius Uosis</strong>. I study Computer Science at <strong className="font-semibold text-stone-900 dark:text-white">Loughborough University</strong>. I enjoy working close to how software actually runs—from designing a domain-specific language for finite automata to streaming video directly over LAN with WebRTC.
+                </p>
               </div>
 
-              <p className="text-base sm:text-lg text-[#78716c] leading-relaxed max-w-2xl">
-                {profileData.heroDescription}
-              </p>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <a
+                  href="#projects"
+                  onClick={(e) => scrollToSection(e, 'projects')}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs sm:text-sm font-semibold hover:bg-stone-800 dark:hover:bg-stone-200 shadow-sm transition-all"
+                >
+                  <span>View Projects</span>
+                  <ChevronRight className="w-4 h-4" />
+                </a>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                {socialsData.map((social) => (
-                  <motion.a
-                    key={social.id}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    href={social.url}
-                    target={social.id === 'email' ? undefined : '_blank'}
-                    rel={social.id === 'email' ? undefined : 'noopener noreferrer'}
-                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-stone-200/80 shadow-sm hover:border-stone-300 text-sm font-medium text-[#292524] transition-all"
-                  >
-                    <SocialIcon icon={social.icon} className="w-4 h-4 text-[#78716c]" />
-                    <span>{social.label}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#78716c]" />
-                  </motion.a>
-                ))}
+                <a
+                  href="./gabrielius_uosis_cv.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] text-xs sm:text-sm font-semibold hover:border-stone-400 dark:hover:border-stone-500 shadow-2xs transition-all"
+                >
+                  <FileText className="w-4 h-4 text-[#2d5a43] dark:text-[#7fd8ab]" />
+                  <span>Open CV (PDF)</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#f0eee9] dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-xs sm:text-sm font-semibold hover:bg-stone-200/80 dark:hover:bg-white/10 transition-colors"
+                >
+                  {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-stone-500" />}
+                  <span>{copiedEmail ? 'Email Copied!' : 'Copy Email'}</span>
+                </button>
+              </div>
+
+              {/* Quick Highlights */}
+              <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-[#14171d] border border-stone-200/70 dark:border-[#262a34] shadow-2xs">
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-[#2d5a43] dark:text-[#7fd8ab]">BSc CS</div>
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">Loughborough Uni</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-[#14171d] border border-stone-200/70 dark:border-[#262a34] shadow-2xs">
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-[#9e472d] dark:text-[#e07f63]">2x</div>
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">Hackathon Podiums</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-[#14171d] border border-stone-200/70 dark:border-[#262a34] shadow-2xs">
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-[#345e77] dark:text-[#78b3d6]">10,000+</div>
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">App Users (Adapt)</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-[#14171d] border border-stone-200/70 dark:border-[#262a34] shadow-2xs">
+                  <div className="text-xl sm:text-2xl font-bold font-mono text-[#7c5826] dark:text-[#d4aa6d]">0 Dep</div>
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">WebRTC LAN Streamer</div>
+                </div>
               </div>
             </motion.div>
 
+            {/* Right Column: Profile Card */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.1, ease: 'easeOut' }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="lg:col-span-5"
             >
-              <div className="rounded-[2.5rem] bg-[#f0eee9]/90 border border-stone-200/70 p-6 sm:p-7 shadow-[0_12px_40px_-15px_rgba(28,25,23,0.06)] space-y-5">
-                <div className="flex items-center justify-between bg-white rounded-full px-4 py-3 border border-stone-200/60 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#e7f0eb] border border-[#cfe2d8] text-[#2d5a43] font-bold text-sm flex items-center justify-center">
-                      {profileData.initials}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-[#1c1917]">
-                        {profileData.fullName}
-                      </div>
-                      <div className="text-xs text-[#78716c]">
-                        {profileData.title}
-                      </div>
+              <div className="rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] p-6 shadow-xl space-y-5 relative overflow-hidden">
+                {/* Portrait & Name */}
+                <div className="flex items-center gap-4 pb-4 border-b border-stone-100 dark:border-[#262a34]">
+                  <div className="relative group shrink-0">
+                    <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-stone-300 dark:border-stone-700 shadow-md bg-stone-100 dark:bg-stone-800">
+                      <img
+                        src="./avatar.jpg"
+                        alt="Gabrielius Uosis"
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://avatars.githubusercontent.com/u/209792310?v=4';
+                        }}
+                      />
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-[#faf8f5] border border-stone-200/70 text-[11px] font-medium text-[#78716c]">
-                    UK
-                  </span>
+
+                  <div className="space-y-1">
+                    <h2 className="font-extrabold text-lg sm:text-xl tracking-tight">
+                      Gabrielius Uosis
+                    </h2>
+                    <div className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5 font-mono">
+                      <MapPin className="w-3.5 h-3.5 text-stone-400" />
+                      <span>London & Loughborough, UK</span>
+                    </div>
+                    <div className="text-[11px] text-stone-600 dark:text-stone-300">
+                      BSc Computer Science Student
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-3">
-                  {heroPillsData.map((card) => {
-                    const style = accentStyles[card.tone];
-                    const isSelected = selectedHeroCard === card.id;
-                    return (
-                      <motion.button
-                        key={card.id}
-                        type="button"
-                        onClick={() => setSelectedHeroCard(card.id)}
-                        whileHover={{ y: -3 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                        className={`w-full text-left rounded-[1.5rem] p-4 transition-all border ${
-                          isSelected
-                            ? 'bg-white border-stone-300/90 shadow-md'
-                            : 'bg-white/75 border-stone-200/60 shadow-sm hover:bg-white'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-start gap-3">
-                            <div
-                              className={`mt-0.5 w-9 h-9 rounded-full ${style.pillBg} ${style.pillText} border ${style.pillBorder} flex items-center justify-center shrink-0`}
-                            >
-                              <HeroCardIcon icon={card.icon} className="w-4 h-4" />
-                            </div>
-                            <div>
-                              <div className="text-sm font-semibold text-[#1c1917]">
-                                {card.title}
-                              </div>
-                              <div className="text-xs text-[#78716c] mt-0.5">
-                                {card.subtitle}
-                              </div>
-                            </div>
-                          </div>
-                          <span
-                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${style.pillBg} ${style.pillText} border ${style.pillBorder} shrink-0`}
-                          >
-                            {card.badge}
-                          </span>
-                        </div>
-                      </motion.button>
-                    );
-                  })}
-                </div>
-
-                <div className="pt-1 flex items-center justify-between px-2 text-xs text-[#78716c]">
-                  <span className="inline-flex items-center gap-1.5">
-                    <Compass className="w-3.5 h-3.5 text-[#3b7a57]" />
-                    <span>Interactive snapshot</span>
-                  </span>
-                  <a
-                    href="#projects"
-                    onClick={(e) => scrollToSection(e, '#projects')}
-                    className="font-medium text-[#1c1917] hover:underline"
+                {/* Switcher Tabs */}
+                <div className="flex rounded-xl bg-stone-100 dark:bg-white/5 p-1 text-[11px] font-mono">
+                  <button
+                    type="button"
+                    onClick={() => setHeroCardTab('education')}
+                    className={`flex-1 py-1.5 rounded-lg font-semibold transition-all ${
+                      heroCardTab === 'education'
+                        ? 'bg-white dark:bg-[#1e232d] text-stone-900 dark:text-white shadow-2xs'
+                        : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                    }`}
                   >
-                    Explore work ↓
+                    Education
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroCardTab('stack')}
+                    className={`flex-1 py-1.5 rounded-lg font-semibold transition-all ${
+                      heroCardTab === 'stack'
+                        ? 'bg-white dark:bg-[#1e232d] text-stone-900 dark:text-white shadow-2xs'
+                        : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                    }`}
+                  >
+                    Tech Stack
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroCardTab('background')}
+                    className={`flex-1 py-1.5 rounded-lg font-semibold transition-all ${
+                      heroCardTab === 'background'
+                        ? 'bg-white dark:bg-[#1e232d] text-stone-900 dark:text-white shadow-2xs'
+                        : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                    }`}
+                  >
+                    Background
+                  </button>
+                </div>
+
+                {/* Tabbed Content */}
+                <div className="min-h-[140px] text-xs">
+                  {heroCardTab === 'education' && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="p-4 rounded-2xl bg-stone-50 dark:bg-white/[0.03] border border-stone-200/60 dark:border-white/5 space-y-2"
+                    >
+                      <div className="flex items-center justify-between font-semibold">
+                        <span className="flex items-center gap-1.5 text-stone-900 dark:text-white">
+                          <GraduationCap className="w-4 h-4 text-[#2d5a43] dark:text-[#7fd8ab]" />
+                          <span>Loughborough University</span>
+                        </span>
+                        <span className="text-[11px] font-mono text-stone-500">2024 — 2027</span>
+                      </div>
+                      <p className="text-stone-600 dark:text-stone-300 leading-relaxed text-[11px]">
+                        Modules: Software Engineering, Algorithms Analysis, Formal Methods, Theory of Computation, Distributed Systems, Databases, Cloud Computing, Robotics.
+                      </p>
+                      <div className="pt-1 flex flex-wrap gap-1 text-[10px] font-mono text-stone-500 dark:text-stone-400">
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">A-Levels: Maths (A)</span>
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">CS (B)</span>
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">Politics (B)</span>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {heroCardTab === 'stack' && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="p-4 rounded-2xl bg-stone-50 dark:bg-white/[0.03] border border-stone-200/60 dark:border-white/5 space-y-2"
+                    >
+                      <div className="flex items-center justify-between font-semibold">
+                        <span className="flex items-center gap-1.5 text-stone-900 dark:text-white">
+                          <Code2 className="w-4 h-4 text-[#9e472d] dark:text-[#e07f63]" />
+                          <span>Languages & Tools</span>
+                        </span>
+                        <span className="text-[11px] font-mono text-stone-500">Core Stack</span>
+                      </div>
+                      <p className="text-stone-600 dark:text-stone-300 leading-relaxed text-[11px]">
+                        Python, Java, Kotlin, JavaScript, SQL, PHP, React, Node.js, PostgreSQL, Google Cloud Platform (GCP), Linux, and Git.
+                      </p>
+                      <div className="pt-1 flex flex-wrap gap-1 text-[10px] font-mono">
+                        <span className="px-2 py-0.5 rounded bg-[#e7f0eb] text-[#2d5a43] dark:bg-[#152e22] dark:text-[#7fd8ab]">ANTLR4 & DSLs</span>
+                        <span className="px-2 py-0.5 rounded bg-[#eaf1f5] text-[#345e77] dark:bg-[#12222f] dark:text-[#78b3d6]">WebRTC P2P</span>
+                        <span className="px-2 py-0.5 rounded bg-[#f9ebe6] text-[#9e472d] dark:bg-[#2e1913] dark:text-[#e07f63]">Full-Stack</span>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {heroCardTab === 'background' && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="p-4 rounded-2xl bg-stone-50 dark:bg-white/[0.03] border border-stone-200/60 dark:border-white/5 space-y-2"
+                    >
+                      <div className="flex items-center justify-between font-semibold">
+                        <span className="flex items-center gap-1.5 text-stone-900 dark:text-white">
+                          <Briefcase className="w-4 h-4 text-[#345e77] dark:text-[#78b3d6]" />
+                          <span>Work & Interests</span>
+                        </span>
+                        <span className="text-[11px] font-mono text-stone-500">London, UK</span>
+                      </div>
+                      <p className="text-stone-600 dark:text-stone-300 leading-relaxed text-[11px]">
+                        Waiter at Gordon's Wine Bar (350+ covers per shift) and former Software Intern at Adapt. Outside of work and uni, I enjoy weightlifting, indoor cycling, and chess.
+                      </p>
+                      <div className="pt-1 flex flex-wrap gap-1 text-[10px] font-mono text-stone-500 dark:text-stone-400">
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">Chess (1500 ELO)</span>
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">Weightlifting</span>
+                        <span className="px-2 py-0.5 rounded bg-stone-200/60 dark:bg-white/10">English & Lithuanian</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Social Links Row */}
+                <div className="pt-2 flex items-center justify-between text-xs font-mono">
+                  <a
+                    href="https://github.com/GabrieliusUosis"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    <span>GitHub</span>
+                    <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                  </a>
+
+                  <a
+                    href="https://linkedin.com/in/gabrielius-uo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+                  >
+                    <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
+                    <span>LinkedIn</span>
+                    <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                  </a>
+
+                  <a
+                    href="./gabrielius_uosis_cv.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[#2d5a43] dark:text-[#7fd8ab] hover:underline"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>CV (PDF)</span>
                   </a>
                 </div>
               </div>
@@ -753,92 +901,126 @@ export default function App() {
           </div>
         </section>
 
-        <section id="projects" className="scroll-mt-32 space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0eee9] border border-stone-200/80 text-xs font-medium text-[#44403c]">
-                Selected Engineering Work
+        {/* ===================================================================
+            3. PROJECTS SECTION
+        =================================================================== */}
+        <section id="projects" className="scroll-mt-36 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-xs font-mono text-stone-600 dark:text-stone-400">
+                Selected Work
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1c1917]">
-                Featured Projects
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Projects
               </h2>
             </div>
-            <p className="text-sm sm:text-base text-[#78716c] max-w-md leading-relaxed">
-              Full-stack web applications, custom language compilers, and low-latency systems engineered with clean architecture.
-            </p>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-stone-100 dark:bg-white/5 border border-stone-200/70 dark:border-white/10">
+              {[
+                { id: 'all', label: 'All' },
+                { id: 'compilers', label: 'Compilers & DSL' },
+                { id: 'systems', label: 'Networking' },
+                { id: 'fullstack', label: 'Full-Stack & Mobile' },
+                { id: 'hackathon', label: 'Hackathons' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(tab.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                    selectedCategory === tab.id
+                      ? 'bg-white dark:bg-[#1e232d] text-stone-900 dark:text-white shadow-2xs font-semibold'
+                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            {projectsData.map((project) => {
-              const style = accentStyles[project.accent];
+          {/* Project Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
+            {filteredProjects.map((project) => {
               return (
                 <motion.article
                   key={project.id}
-                  whileHover={{ y: -4 }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                  className={`group rounded-[2rem] bg-white border border-stone-200/70 ${style.cardTint} p-8 sm:p-10 shadow-[0_12px_40px_-15px_rgba(28,25,23,0.06)] hover:shadow-[0_20px_50px_-15px_rgba(28,25,23,0.1)] flex flex-col justify-between transition-all`}
+                  layout
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] p-7 sm:p-8 shadow-xs hover:shadow-md hover:border-stone-400 dark:hover:border-stone-500 transition-all flex flex-col justify-between"
                 >
-                  <div className="space-y-5">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <span
-                        className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium ${style.pillBg} ${style.pillText} border ${style.pillBorder}`}
-                      >
-                        <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
-                        {project.type}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab] border border-[#cfe2d8] dark:border-[#2d5a43]/60">
+                        {project.badge}
                       </span>
-                      <span className="px-3 py-1 rounded-full bg-[#faf8f5] border border-stone-200/60 text-xs font-medium text-[#78716c]">
-                        {project.year}
+                      <span className="text-xs font-mono text-stone-500 dark:text-stone-400">
+                        {project.period}
                       </span>
                     </div>
 
-                    <div className="space-y-3">
-                      <h3 className="text-xl sm:text-2xl font-bold text-[#1c1917] leading-snug">
+                    <div className="space-y-2">
+                      <h3 className="text-xl sm:text-2xl font-bold leading-snug">
                         {project.title}
                       </h3>
-                      <p className="text-sm sm:text-base text-[#78716c] leading-relaxed">
-                        {project.description}
+                      <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                        {project.tagline}
                       </p>
+                    </div>
+
+                    {/* Key Details */}
+                    <div className="grid grid-cols-2 gap-2 pt-2">
+                      {project.metrics.slice(0, 2).map((m, idx) => (
+                        <div
+                          key={idx}
+                          className="px-3 py-2 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200/50 dark:border-white/5"
+                        >
+                          <div className="text-[10px] text-stone-500 dark:text-stone-400 uppercase tracking-wider font-mono">
+                            {m.label}
+                          </div>
+                          <div className="text-xs sm:text-sm font-semibold font-mono text-stone-900 dark:text-white mt-0.5">
+                            {m.value}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="pt-8 mt-8 border-t border-stone-100 space-y-6">
-                    <div className="flex flex-wrap gap-2">
-                      {project.techTags.map((tag) => (
+                  <div className="pt-6 mt-6 border-t border-stone-100 dark:border-[#262a34] space-y-4">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techTags.slice(0, 5).map((t) => (
                         <span
-                          key={tag}
-                          className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#faf8f5] text-[#44403c] border border-stone-200/70"
+                          key={t}
+                          className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300"
                         >
-                          {tag}
+                          {t}
                         </span>
                       ))}
                     </div>
 
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <motion.a
-                        whileHover={{ y: -1.5 }}
-                        whileTap={{ scale: 0.98 }}
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setActiveDetailProject(project)}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors"
+                      >
+                        <span>Project Details</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+
+                      <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-stone-900 text-stone-50 hover:bg-stone-800 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium bg-stone-100 dark:bg-white/5 text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-white/10 transition-colors"
                       >
                         <Github className="w-3.5 h-3.5" />
-                        <span>View Source</span>
-                      </motion.a>
-
-                      {project.liveUrl && (
-                        <motion.a
-                          whileHover={{ y: -1.5 }}
-                          whileTap={{ scale: 0.98 }}
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#f0eee9] hover:bg-stone-200/80 text-[#1c1917] transition-colors"
-                        >
-                          <span>Live Demo</span>
-                          <ExternalLink className="w-3.5 h-3.5 text-[#78716c]" />
-                        </motion.a>
-                      )}
+                        <span>GitHub</span>
+                        <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                      </a>
                     </div>
                   </div>
                 </motion.article>
@@ -847,383 +1029,485 @@ export default function App() {
           </div>
         </section>
 
-        <section id="toolkit" className="scroll-mt-32 space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e7f0eb] border border-[#cfe2d8] text-xs font-medium text-[#2d5a43]">
-                Technical Capabilities
+        {/* ===================================================================
+            4. CODE & ARCHITECTURE PREVIEW (ash-lang & PulseLAN)
+        =================================================================== */}
+        <section id="architecture" className="scroll-mt-36 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#eaf1f5] dark:bg-[#12222f] text-[#345e77] dark:text-[#78b3d6] text-xs font-mono font-medium border border-[#d3e2ec] dark:border-[#345e77]/40">
+                How It Works
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1c1917]">
-                Skills & Toolkit
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Code & System Walkthrough
               </h2>
             </div>
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-md">
+              A closer look at the syntax and execution pipeline in <code className="font-mono">ash-lang</code> and the local streaming architecture in <code className="font-mono">PulseLAN</code>.
+            </p>
+          </div>
 
-            <div className="flex flex-wrap gap-2">
+          <div className="rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] shadow-lg overflow-hidden">
+            {/* Tabs */}
+            <div className="flex items-center gap-2 px-6 pt-5 pb-3 border-b border-stone-100 dark:border-[#262a34] bg-stone-50/50 dark:bg-white/[0.02] flex-wrap">
               <button
                 type="button"
-                onClick={() => setActiveSkillCategory('all')}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
-                  activeSkillCategory === 'all'
-                    ? 'bg-stone-900 text-stone-50 shadow-sm'
-                    : 'bg-white text-[#78716c] border border-stone-200/70 hover:text-[#1c1917]'
+                onClick={() => setActiveSandboxTab('ashlang')}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  activeSandboxTab === 'ashlang'
+                    ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 shadow-sm'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
                 }`}
               >
-                All Areas
+                <Terminal className="w-3.5 h-3.5" />
+                <span>ash-lang: Syntax & DFA Simulation</span>
               </button>
-              {skillsData.map((group) => (
-                <button
-                  key={group.id}
-                  type="button"
-                  onClick={() => setActiveSkillCategory(group.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
-                    activeSkillCategory === group.id
-                      ? 'bg-stone-900 text-stone-50 shadow-sm'
-                      : 'bg-white text-[#78716c] border border-stone-200/70 hover:text-[#1c1917]'
-                  }`}
-                >
-                  {group.category}
-                </button>
-              ))}
+
+              <button
+                type="button"
+                onClick={() => setActiveSandboxTab('pulselan')}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  activeSandboxTab === 'pulselan'
+                    ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 shadow-sm'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                }`}
+              >
+                <Network className="w-3.5 h-3.5" />
+                <span>PulseLAN: WebRTC & HTTP 206 Streaming</span>
+              </button>
+            </div>
+
+            {/* Content Panels */}
+            <div className="p-6 sm:p-8">
+              {activeSandboxTab === 'ashlang' && (
+                <div className="space-y-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900 dark:text-white">
+                        ash-lang: Declarative Automata Syntax & Runtime Trace
+                      </h3>
+                      <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                        Parsed with ANTLR4 (<code className="font-mono">AutomataLexer.g4</code> & <code className="font-mono">AutomataParser.g4</code>), validated by <code className="font-mono">SemanticAnalyser.py</code>, and simulated in Python.
+                      </p>
+                    </div>
+                    <a
+                      href="https://github.com/GabrieliusUosis/ash-lang"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-stone-100 dark:bg-white/10 hover:bg-stone-200 dark:hover:bg-white/20 transition-colors"
+                    >
+                      <span>github.com/GabrieliusUosis/ash-lang</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="rounded-2xl bg-[#0f1218] text-stone-200 p-5 font-mono text-xs overflow-x-auto shadow-inner space-y-2 border border-stone-800">
+                      <div className="text-stone-400 text-[11px] uppercase tracking-wider pb-1 border-b border-stone-800">
+                        demo.ash — Declaring DFAs & Regex
+                      </div>
+                      <pre className="text-amber-300 leading-relaxed">
+{`// DFA: Accepts binary numbers divisible by 3
+dfa DivisibleByThree {
+    states: r0, r1, r2
+    alphabet: "0", "1"
+    start: r0
+    accept: r0
+    transitions: {
+        r0 -> r0: "0"
+        r0 -> r1: "1"
+        r1 -> r2: "0"
+        r1 -> r0: "1"
+        r2 -> r1: "0"
+        r2 -> r2: "1"
+    }
+}
+
+// Regex: Strings containing an odd number of 1s
+regex HasOddOnes = ("0"* "1" "0"* "1" "0"*)* "0"* "1" "0"*`}
+                      </pre>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#0f1218] text-stone-200 p-5 font-mono text-xs overflow-x-auto shadow-inner space-y-2 border border-stone-800">
+                      <div className="text-stone-400 text-[11px] uppercase tracking-wider pb-1 border-b border-stone-800">
+                        $ python main.py demo.ash DivisibleByThree 110 101
+                      </div>
+                      <pre className="text-emerald-400 leading-relaxed">
+{`Semantic analysis complete. Valid machines loaded:
+ - [DFA] EndsWithZero
+ - [DFA] EvenZeros
+ - [DFA] ContainsAB
+ - [DFA] DivisibleByThree
+ - [REGEX] HasOddOnes
+
+Simulating DFA 'DivisibleByThree':
+  Input "110": ACCEPT
+  Trace: r0 --(1)--> r1 -> r1 --(1)--> r0 -> r0 --(0)--> r0
+
+  Input "101": REJECT
+  Trace: r0 --(1)--> r1 -> r1 --(0)--> r2 -> r2 --(1)--> r2`}
+                      </pre>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/60 dark:border-white/5 flex items-start gap-3">
+                    <Zap className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                    <p className="text-xs text-stone-600 dark:text-stone-300 leading-normal">
+                      <strong>Static Semantic Checks:</strong> Before any simulation runs, <code className="font-mono">SemanticAnalyser.py</code> walks the ANTLR parse tree to verify that every transition references declared states and valid alphabet symbols, and catches DFA determinism violations if a state defines duplicate transitions on the same symbol.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {activeSandboxTab === 'pulselan' && (
+                <div className="space-y-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900 dark:text-white">
+                        PulseLAN: Direct WebRTC DataChannels & Service Worker Streaming
+                      </h3>
+                      <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                        Streams multi-gigabyte video files directly between browsers on the same LAN with zero npm dependencies.
+                      </p>
+                    </div>
+                    <a
+                      href="https://github.com/GabrieliusUosis/pulseLAN"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-stone-100 dark:bg-white/10 hover:bg-stone-200 dark:hover:bg-white/20 transition-colors"
+                    >
+                      <span>github.com/GabrieliusUosis/pulseLAN</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+
+                  <div className="rounded-2xl bg-[#0f1218] text-stone-200 p-5 font-mono text-xs overflow-x-auto shadow-inner leading-relaxed border border-stone-800">
+                    <pre className="text-emerald-400">
+{`┌────────────────────────────────────────────────────────────────────────┐
+│                        Local Area Network (LAN)                        │
+└────────────────────────────────────────────────────────────────────────┘
+            │                                                │
+            ▼                                                ▼
+   ┌─────────────────┐                              ┌─────────────────┐
+   │ Browser Peer A  │                              │ Browser Peer B  │
+   │ (Seeder)        │                              │ (Viewer / DL)   │
+   │                 │                              │                 │
+   │ • File.slice()  │                              │ • Service Worker│
+   │ • DataChannel   │◄════════════════════════════►│ • <video> (206) │
+   │   Chunk Stream  │       WebRTC DataChannel     │ • Direct Save   │
+   └────────┬────────┘         (Direct Mesh)        └────────┬────────┘
+            │                                                │
+            │              WebSocket Signaling               │
+            └──────────────────────►┌──────────────┐◄────────┘
+                                    │ Node.js      │
+                                    │ Signaling    │
+                                    └──────────────┘
+                                     (Metadata only)`}
+                    </pre>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                    <div className="p-4 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/60 dark:border-white/5 space-y-1.5">
+                      <div className="text-xs font-bold font-mono text-[#2d5a43] dark:text-[#7fd8ab]">
+                        1. Metadata Broadcast
+                      </div>
+                      <p className="text-xs text-stone-600 dark:text-stone-300 leading-normal">
+                        When a file is dropped into Peer A’s browser, only its name, size, and MIME type are sent over the WebSocket signaling server. The file bytes stay on disk.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/60 dark:border-white/5 space-y-1.5">
+                      <div className="text-xs font-bold font-mono text-[#345e77] dark:text-[#78b3d6]">
+                        2. Seeking & Byte Ranges
+                      </div>
+                      <p className="text-xs text-stone-600 dark:text-stone-300 leading-normal">
+                        The Service Worker intercepts <code className="font-mono text-[11px]">Range: bytes=start-end</code> requests from the HTML5 video player and asks Peer A for that exact slice over WebRTC in 64KB frames.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/60 dark:border-white/5 space-y-1.5">
+                      <div className="text-xs font-bold font-mono text-[#9e472d] dark:text-[#e07f63]">
+                        3. Backpressure Control
+                      </div>
+                      <p className="text-xs text-stone-600 dark:text-stone-300 leading-normal">
+                        To keep memory usage low, the sender checks <code className="font-mono text-[11px]">channel.bufferedAmount</code>. If it passes 4MB, slicing pauses until <code className="font-mono text-[11px]">bufferedamountlow</code> fires.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ===================================================================
+            5. SKILLS SECTION
+        =================================================================== */}
+        <section id="skills" className="scroll-mt-36 space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f9ebe6] dark:bg-[#2e1913] text-[#9e472d] dark:text-[#e07f63] text-xs font-mono font-medium border border-[#f1d4ca] dark:border-[#9e472d]/40">
+                Technical Toolkit
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Skills & Coursework
+              </h2>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {skillsData
-              .filter((group) => activeSkillCategory === 'all' || group.id === activeSkillCategory)
-              .map((group) => {
-                const style = accentStyles[group.accent];
-                return (
-                  <motion.div
-                    layout
-                    key={group.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="rounded-[2rem] bg-white border border-stone-200/70 p-7 sm:p-8 shadow-[0_12px_40px_-15px_rgba(28,25,23,0.05)] flex flex-col justify-between space-y-6"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-1.5">
-                        <h3 className="text-xl font-bold text-[#1c1917]">
-                          {group.category}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#78716c]">
-                          {group.description}
-                        </p>
-                      </div>
-                      <div
-                        className={`w-11 h-11 rounded-full ${style.pillBg} ${style.pillText} border ${style.pillBorder} flex items-center justify-center shrink-0`}
-                      >
-                        <SkillCategoryIcon icon={group.icon} className="w-5 h-5" />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2.5">
-                      {group.skills.map((skill) => (
-                        <motion.span
-                          key={skill}
-                          whileHover={{ y: -2 }}
-                          className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium ${style.pillBg} ${style.pillText} border ${style.pillBorder} transition-shadow hover:shadow-sm cursor-default`}
-                        >
-                          {skill}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </motion.div>
-                );
-              })}
-          </div>
-        </section>
-
-        <section id="experience" className="scroll-mt-32 space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f9ebe6] border border-[#f1d4ca] text-xs font-medium text-[#9e472d]">
-                Academic & Professional Journey
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1c1917]">
-                Experience & Education
-              </h2>
-            </div>
-            <p className="text-sm sm:text-base text-[#78716c] max-w-md leading-relaxed">
-              Combining rigorous academic foundations in computer science with practical product engineering and fast-paced team operations.
-            </p>
-          </div>
-
-          <div className="relative pl-4 sm:pl-8 space-y-6 before:content-[''] before:absolute before:top-6 before:bottom-6 before:left-1.5 sm:before:left-3 before:w-[2px] before:bg-stone-200/90 before:rounded-full">
-            {experienceData.map((item) => {
-              const style = accentStyles[item.accent];
+            {skillsCategories.map((cat) => {
+              const IconComp = cat.icon;
               return (
-                <motion.div
-                  key={item.id}
-                  whileHover={{ y: -3 }}
-                  transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-                  className="relative rounded-[2rem] bg-white border border-stone-200/70 p-7 sm:p-9 shadow-[0_12px_40px_-15px_rgba(28,25,23,0.05)]"
+                <div
+                  key={cat.id}
+                  className="rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] p-7 shadow-2xs hover:border-stone-400 dark:hover:border-stone-500 transition-all flex flex-col justify-between space-y-5"
                 >
-                  <span
-                    className={`absolute -left-[1.35rem] sm:-left-[1.85rem] top-9 w-4 h-4 rounded-full ${style.dot} ring-4 ring-[#faf8f5]`}
-                  />
-
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      <span
-                        className={`px-3.5 py-1 rounded-full text-xs font-medium ${style.pillBg} ${style.pillText} border ${style.pillBorder}`}
-                      >
-                        {item.category}
-                      </span>
-                      <span className="px-3.5 py-1 rounded-full text-xs font-medium bg-[#faf8f5] border border-stone-200/70 text-[#44403c]">
-                        {item.highlightBadge}
-                      </span>
-                    </div>
-
-                    <div className="inline-flex items-center gap-2 text-xs font-medium text-[#78716c]">
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span>{item.location}</span>
-                    </div>
-                  </div>
-
                   <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl font-bold text-[#1c1917]">
-                      {item.role}{' '}
-                      <span className="font-normal text-[#78716c]">
-                        at {item.organization}
-                      </span>
-                    </h3>
-                    <p className="text-sm sm:text-base text-[#78716c] leading-relaxed">
-                      {item.summary}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-bold text-stone-900 dark:text-white">
+                        {cat.name}
+                      </h3>
+                      <div className="p-2.5 rounded-2xl bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300">
+                        <IconComp className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-stone-500 dark:text-stone-400 leading-normal">
+                      {cat.description}
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 pt-5 mt-5 border-t border-stone-100">
-                    {item.tags.map((tag) => (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {cat.skills.map((skill) => (
                       <span
-                        key={tag}
-                        className="px-3 py-1 rounded-full text-xs font-medium bg-[#faf8f5] text-[#78716c] border border-stone-200/60"
+                        key={skill}
+                        className="px-3 py-1.5 rounded-xl text-xs font-mono bg-stone-50 dark:bg-white/5 border border-stone-200/70 dark:border-white/10 text-stone-800 dark:text-stone-200"
                       >
-                        {tag}
+                        {skill}
                       </span>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </section>
 
-        <section id="contact" className="scroll-mt-32">
-          <div className="rounded-[2.5rem] bg-[#f0eee9] border border-stone-200/80 p-7 sm:p-12 shadow-[0_12px_40px_-15px_rgba(28,25,23,0.06)]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-              <div className="lg:col-span-5 space-y-6">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200/70 text-xs font-medium text-[#2d5a43]">
-                  <span className="w-2 h-2 rounded-full bg-[#3b7a57]" />
-                  Open to Conversations
-                </span>
+        {/* ===================================================================
+            6. EXPERIENCE, EDUCATION & HACKATHONS
+        =================================================================== */}
+        <section id="experience" className="scroll-mt-36 space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f5efe2] dark:bg-[#2e2316] text-[#7c5826] dark:text-[#d4aa6d] text-xs font-mono font-medium border border-[#e8dcc2] dark:border-[#7c5826]/40">
+                Timeline
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Education, Experience & Hackathons
+              </h2>
+            </div>
+          </div>
 
-                <div className="space-y-3">
-                  <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1c1917] leading-tight">
-                    Have an opening or want to connect?
-                  </h2>
-                  <p className="text-sm sm:text-base text-[#78716c] leading-relaxed">
-                    Whether you are hiring for graduate software engineering roles, planning a project, or simply want to say hello, I would love to hear from you.
+          <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:top-4 before:bottom-4 before:left-2 sm:before:left-3 before:w-0.5 before:bg-stone-200 dark:before:bg-[#262a34]">
+            {timelineEvents.map((event) => (
+              <div
+                key={event.id}
+                className="relative rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] p-6 sm:p-7 shadow-2xs hover:border-stone-400 dark:hover:border-stone-500 transition-all space-y-4"
+              >
+                <div className="absolute -left-[1.85rem] sm:-left-[2.35rem] top-7 w-3.5 h-3.5 rounded-full bg-stone-900 dark:bg-white ring-4 ring-[#faf8f5] dark:ring-[#0c0e12]" />
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab] border border-[#cfe2d8] dark:border-[#2d5a43]/60">
+                      {event.badge}
+                    </span>
+                    <span className="text-xs font-mono text-stone-500 dark:text-stone-400">
+                      {event.period}
+                    </span>
+                  </div>
+
+                  <div className="inline-flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 font-mono">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{event.location}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="text-lg sm:text-xl font-bold">
+                    {event.role}{' '}
+                    <span className="font-normal text-stone-500 dark:text-stone-400">
+                      — {event.organization}
+                    </span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    {event.summary}
                   </p>
                 </div>
 
-                <div className="rounded-[2rem] bg-white border border-stone-200/70 p-6 shadow-sm space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-[#78716c]">
-                      Direct Email
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#e7f0eb] text-[#2d5a43] text-[11px] font-medium">
-                      Fast Response
-                    </span>
-                  </div>
-
-                  <div className="text-sm sm:text-base font-semibold text-[#1c1917] break-all">
-                    {profileData.email}
-                  </div>
-
-                  <div className="relative">
-                    <motion.button
-                      type="button"
-                      whileHover={{ y: -1.5 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleCopyEmail}
-                      className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                        copiedEmail
-                          ? 'bg-[#e7f0eb] text-[#2d5a43] border border-[#cfe2d8]'
-                          : 'bg-stone-900 text-stone-50 hover:bg-stone-800'
-                      }`}
+                <div className="flex flex-wrap gap-1.5 pt-2 border-t border-stone-100 dark:border-[#262a34]">
+                  {event.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-stone-100 dark:bg-white/5 text-stone-600 dark:text-stone-300"
                     >
-                      {copiedEmail ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>Copied to clipboard!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4" />
-                          <span>Copy Email</span>
-                        </>
-                      )}
-                    </motion.button>
-                  </div>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ===================================================================
+            7. CONTACT SECTION
+        =================================================================== */}
+        <section id="contact" className="scroll-mt-36">
+          <div className="rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] p-7 sm:p-12 shadow-xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              {/* Left Column: Direct info */}
+              <div className="lg:col-span-5 space-y-6">
+                <div className="space-y-2">
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab] text-xs font-mono font-medium">
+                    <span className="w-2 h-2 rounded-full bg-[#3b7a57]" />
+                    Contact
+                  </span>
+                  <h2 className="text-3xl font-extrabold tracking-tight">
+                    Get in touch
+                  </h2>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    If you’re hiring for software engineering placements or graduate roles, or want to chat about any of my projects, feel free to reach out.
+                  </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  {socialsData
-                    .filter((s) => s.id !== 'email')
-                    .map((social) => (
-                      <motion.a
-                        key={social.id}
-                        whileHover={{ y: -2 }}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white border border-stone-200/70 text-xs sm:text-sm font-medium text-[#1c1917] hover:border-stone-300 shadow-sm transition-all"
-                      >
-                        <SocialIcon icon={social.icon} className="w-4 h-4 text-[#78716c]" />
-                        <span>{social.label}</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#78716c]" />
-                      </motion.a>
-                    ))}
+                {/* Email card */}
+                <div className="p-5 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono text-stone-500 dark:text-stone-400">
+                    <span>Email</span>
+                  </div>
+                  <div className="font-mono text-sm sm:text-base font-bold text-stone-900 dark:text-white break-all">
+                    gabrieliusuosis@gmail.com
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="w-full py-2.5 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedEmail ? 'Copied to Clipboard!' : 'Copy Email Address'}</span>
+                  </button>
+                </div>
+
+                {/* Social & Phone */}
+                <div className="space-y-2.5 text-xs font-mono">
+                  <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                    <Phone className="w-4 h-4 text-stone-400" />
+                    <span>07821 782257</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                    <Github className="w-4 h-4 text-stone-400" />
+                    <a href="https://github.com/GabrieliusUosis" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      github.com/GabrieliusUosis
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                    <Linkedin className="w-4 h-4 text-[#0077b5]" />
+                    <a href="https://linkedin.com/in/gabrielius-uo" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      linkedin.com/in/gabrielius-uo
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300">
+                    <FileText className="w-4 h-4 text-[#2d5a43] dark:text-[#7fd8ab]" />
+                    <a href="./gabrielius_uosis_cv.pdf" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      Download CV (PDF)
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 rounded-[2rem] bg-white border border-stone-200/70 p-7 sm:p-9 shadow-sm">
-                <h3 className="text-xl font-bold text-[#1c1917] mb-1">
-                  Send a Direct Note
-                </h3>
-                <p className="text-xs sm:text-sm text-[#78716c] mb-6">
-                  Fill out the fields below and I will get back to you soon.
-                </p>
+              {/* Right Column: Contact form */}
+              <div className="lg:col-span-7 rounded-2xl bg-stone-50 dark:bg-white/[0.03] border border-stone-200/80 dark:border-white/10 p-6 sm:p-8 space-y-5">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold">Send a Message</h3>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
+                    Leave a message below and I'll get back to you as soon as possible.
+                  </p>
+                </div>
 
                 <AnimatePresence>
                   {submitSuccess && (
                     <motion.div
-                      initial={{ opacity: 0, y: -8 }}
+                      initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      className="mb-6 p-4 rounded-2xl bg-[#e7f0eb] border border-[#cfe2d8] flex items-start gap-3 text-[#2d5a43]"
+                      exit={{ opacity: 0, y: -6 }}
+                      className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs flex items-center gap-2.5"
                     >
-                      <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
-                      <div className="text-xs sm:text-sm">
-                        <p className="font-semibold">Thank you for your message!</p>
-                        <p className="mt-0.5 opacity-90">
-                          Your note has been received. I look forward to speaking with you.
-                        </p>
-                      </div>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span>Thanks for reaching out! I'll reply soon.</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                <form onSubmit={handleFormSubmit} noValidate className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-xs font-medium text-[#44403c] mb-2"
-                      >
-                        Your Name
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => {
-                          setFormData({ ...formData, name: e.target.value });
-                          if (formErrors.name) {
-                            setFormErrors({ ...formErrors, name: '' });
-                          }
-                        }}
-                        placeholder="Alex Morgan"
-                        className={`w-full px-4 py-3 rounded-2xl bg-[#faf8f5] border text-sm text-[#1c1917] placeholder-[#78716c]/50 focus:outline-none focus:bg-white transition-all ${
-                          formErrors.name
-                            ? 'border-[#c86d51] focus:ring-2 focus:ring-[#f9ebe6]'
-                            : 'border-stone-200/80 focus:border-stone-400 focus:ring-4 focus:ring-stone-100'
-                        }`}
-                      />
-                      {formErrors.name && (
-                        <p className="text-xs text-[#9e472d] mt-1.5">{formErrors.name}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-xs font-medium text-[#44403c] mb-2"
-                      >
-                        Email Address
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => {
-                          setFormData({ ...formData, email: e.target.value });
-                          if (formErrors.email) {
-                            setFormErrors({ ...formErrors, email: '' });
-                          }
-                        }}
-                        placeholder="alex@company.com"
-                        className={`w-full px-4 py-3 rounded-2xl bg-[#faf8f5] border text-sm text-[#1c1917] placeholder-[#78716c]/50 focus:outline-none focus:bg-white transition-all ${
-                          formErrors.email
-                            ? 'border-[#c86d51] focus:ring-2 focus:ring-[#f9ebe6]'
-                            : 'border-stone-200/80 focus:border-stone-400 focus:ring-4 focus:ring-stone-100'
-                        }`}
-                      />
-                      {formErrors.email && (
-                        <p className="text-xs text-[#9e472d] mt-1.5">{formErrors.email}</p>
-                      )}
-                    </div>
+                <form onSubmit={handleFormSubmit} noValidate className="space-y-4 text-xs">
+                  <div>
+                    <label className="block font-medium text-stone-700 dark:text-stone-300 mb-1.5">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (formErrors.name) setFormErrors({ ...formErrors, name: '' });
+                      }}
+                      placeholder="Your name"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-600 transition-all"
+                    />
+                    {formErrors.name && <p className="text-[#9e472d] mt-1">{formErrors.name}</p>}
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-xs font-medium text-[#44403c] mb-2"
-                    >
+                    <label className="block font-medium text-stone-700 dark:text-stone-300 mb-1.5">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (formErrors.email) setFormErrors({ ...formErrors, email: '' });
+                      }}
+                      placeholder="you@example.com"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-600 transition-all"
+                    />
+                    {formErrors.email && <p className="text-[#9e472d] mt-1">{formErrors.email}</p>}
+                  </div>
+
+                  <div>
+                    <label className="block font-medium text-stone-700 dark:text-stone-300 mb-1.5">
                       Message
                     </label>
                     <textarea
-                      id="message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => {
                         setFormData({ ...formData, message: e.target.value });
-                        if (formErrors.message) {
-                          setFormErrors({ ...formErrors, message: '' });
-                        }
+                        if (formErrors.message) setFormErrors({ ...formErrors, message: '' });
                       }}
-                      placeholder="Hi Gabrielius, I came across your portfolio and would love to discuss an engineering role..."
-                      className={`w-full px-4 py-3 rounded-2xl bg-[#faf8f5] border text-sm text-[#1c1917] placeholder-[#78716c]/50 focus:outline-none focus:bg-white transition-all resize-none ${
-                        formErrors.message
-                          ? 'border-[#c86d51] focus:ring-2 focus:ring-[#f9ebe6]'
-                          : 'border-stone-200/80 focus:border-stone-400 focus:ring-4 focus:ring-stone-100'
-                      }`}
+                      placeholder="Hi Gabrielius..."
+                      className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-600 transition-all"
                     />
-                    {formErrors.message && (
-                      <p className="text-xs text-[#9e472d] mt-1.5">{formErrors.message}</p>
-                    )}
+                    {formErrors.message && <p className="text-[#9e472d] mt-1">{formErrors.message}</p>}
                   </div>
 
-                  <motion.button
-                    whileHover={{ y: -1.5 }}
-                    whileTap={{ scale: 0.99 }}
+                  <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-sm font-medium bg-stone-900 text-stone-50 hover:bg-stone-800 disabled:opacity-60 shadow-sm transition-all"
+                    className="w-full py-3 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Sending...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </motion.button>
+                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                  </button>
                 </form>
               </div>
             </div>
@@ -1231,37 +1515,161 @@ export default function App() {
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-stone-200/70 bg-[#faf8f5]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-[#78716c]">
-          <div className="flex items-center gap-2.5">
-            <span className="w-6 h-6 rounded-full bg-stone-900 text-stone-50 text-[10px] font-semibold flex items-center justify-center">
-              {profileData.initials}
-            </span>
-            <span>
-              © {new Date().getFullYear()} {profileData.fullName}. Crafted with care in {profileData.location}.
-            </span>
+      {/* ===================================================================
+          8. FOOTER
+      =================================================================== */}
+      <footer className="border-t border-stone-200/80 dark:border-[#262a34] py-10 px-4 sm:px-6 text-xs text-stone-500 dark:text-stone-400">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-stone-900 dark:text-white">Gabrielius Uosis</span>
+            <span>—</span>
+            <span>London & Loughborough, UK</span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <a
-              href={githubProfileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[#1c1917] transition-colors"
-            >
+          <div className="flex items-center gap-4 font-mono text-[11px]">
+            <a href="./gabrielius_uosis_cv.pdf" target="_blank" rel="noopener noreferrer" className="hover:underline">
+              CV (PDF)
+            </a>
+            <a href="https://github.com/GabrieliusUosis" target="_blank" rel="noopener noreferrer" className="hover:underline">
               GitHub
             </a>
-            <a
-              href="#top"
-              onClick={(e) => scrollToSection(e, '#top')}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-stone-200/80 text-[#1c1917] font-medium shadow-sm hover:bg-[#f0eee9] transition-colors"
-            >
-              <span>Back to top</span>
-              <ArrowUp className="w-3.5 h-3.5" />
+            <a href="https://linkedin.com/in/gabrielius-uo" target="_blank" rel="noopener noreferrer" className="hover:underline">
+              LinkedIn
+            </a>
+            <a href="#top" onClick={(e) => scrollToSection(e, 'top')} className="hover:underline">
+              Back to Top ↑
             </a>
           </div>
         </div>
       </footer>
+
+      {/* ===================================================================
+          MODAL: PROJECT DETAILS
+      =================================================================== */}
+      <AnimatePresence>
+        {activeDetailProject && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveDetailProject(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl bg-white dark:bg-[#14171d] border border-stone-200 dark:border-[#262a34] shadow-2xl p-6 sm:p-8 space-y-6"
+            >
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-stone-100 dark:border-[#262a34]">
+                <div>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#e7f0eb] dark:bg-[#152e22] text-[#2d5a43] dark:text-[#7fd8ab]">
+                    {activeDetailProject.badge}
+                  </span>
+                  <h3 className="text-2xl font-bold mt-2">
+                    {activeDetailProject.title}
+                  </h3>
+                  <p className="text-xs text-stone-500 dark:text-stone-400 font-mono mt-1">
+                    {activeDetailProject.period}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveDetailProject(null)}
+                  className="p-2 rounded-full bg-stone-100 dark:bg-white/10 hover:bg-stone-200 dark:hover:bg-white/20 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Overview */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-stone-400">
+                  Overview
+                </h4>
+                <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+                  {activeDetailProject.overview}
+                </p>
+              </div>
+
+              {/* Metrics Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {activeDetailProject.metrics.map((m, i) => (
+                  <div
+                    key={i}
+                    className="p-3 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/60 dark:border-white/5"
+                  >
+                    <div className="text-[10px] text-stone-500 dark:text-stone-400 font-mono">
+                      {m.label}
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold font-mono mt-0.5">
+                      {m.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* How It's Built */}
+              <div className="space-y-2.5">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-stone-400">
+                  How It's Built
+                </h4>
+                <ul className="space-y-2 text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+                  {activeDetailProject.architecture.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-900 dark:bg-white shrink-0 mt-2" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Key Challenges */}
+              <div className="space-y-2.5">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-stone-400">
+                  Key Challenges
+                </h4>
+                <ul className="space-y-2 text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+                  {activeDetailProject.challenges.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <ShieldCheck className="w-4 h-4 text-[#2d5a43] dark:text-[#7fd8ab] shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="pt-2 border-t border-stone-100 dark:border-[#262a34] flex flex-wrap gap-2 items-center justify-between">
+                <div className="flex flex-wrap gap-1.5">
+                  {activeDetailProject.techTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-lg text-xs font-mono bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={activeDetailProject.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>View on GitHub</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
