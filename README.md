@@ -1,2 +1,2 @@
-# gabrielius.github.io
+# gabrieliusuosis.github.io
 Personal website
